@@ -2,6 +2,7 @@ package tacos.data;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -17,19 +18,18 @@ public class IngredientRepositoryTests {
 
   @Autowired
   IngredientRepository ingredientRepo;
-  
+
   @Autowired
   JdbcTemplate jdbc;
-  
+
   @Test
   public void findById() {
     Optional<Ingredient> flto = ingredientRepo.findById("FLTO");
     assertThat(flto.isPresent()).isTrue();
-    assertThat(flto.get()).isEqualTo(new Ingredient("FLTO", "Flour Tortilla", Type.WRAP));
-    
+    assertThat(flto.get()).isEqualTo(new Ingredient("FLTO", "Flour Tortilla", Type.WRAP, new BigDecimal("1.50")));
+
     Optional<Ingredient> xxxx = ingredientRepo.findById("XXXX");
     assertThat(xxxx.isEmpty()).isTrue();
-
   }
-  
+
 }

@@ -1,4 +1,5 @@
 package tacos;
+
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -7,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -15,8 +17,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import tacos.Ingredient.Type;
@@ -43,33 +45,33 @@ public class DesignTacoControllerTest {
   @BeforeEach
   public void setup() {
     ingredients = Arrays.asList(
-      new Ingredient("FLTO", "Flour Tortilla", Type.WRAP),
-      new Ingredient("COTO", "Corn Tortilla", Type.WRAP),
-      new Ingredient("GRBF", "Ground Beef", Type.PROTEIN),
-      new Ingredient("CARN", "Carnitas", Type.PROTEIN),
-      new Ingredient("TMTO", "Diced Tomatoes", Type.VEGGIES),
-      new Ingredient("LETC", "Lettuce", Type.VEGGIES),
-      new Ingredient("CHED", "Cheddar", Type.CHEESE),
-      new Ingredient("JACK", "Monterrey Jack", Type.CHEESE),
-      new Ingredient("SLSA", "Salsa", Type.SAUCE),
-      new Ingredient("SRCR", "Sour Cream", Type.SAUCE)
+      new Ingredient("FLTO", "Flour Tortilla", Type.WRAP, new BigDecimal("1.50")),
+      new Ingredient("COTO", "Corn Tortilla", Type.WRAP, new BigDecimal("1.50")),
+      new Ingredient("GRBF", "Ground Beef", Type.PROTEIN, new BigDecimal("2.50")),
+      new Ingredient("CARN", "Carnitas", Type.PROTEIN, new BigDecimal("2.75")),
+      new Ingredient("TMTO", "Diced Tomatoes", Type.VEGGIES, new BigDecimal("0.75")),
+      new Ingredient("LETC", "Lettuce", Type.VEGGIES, new BigDecimal("0.50")),
+      new Ingredient("CHED", "Cheddar", Type.CHEESE, new BigDecimal("1.00")),
+      new Ingredient("JACK", "Monterrey Jack", Type.CHEESE, new BigDecimal("1.00")),
+      new Ingredient("SLSA", "Salsa", Type.SAUCE, new BigDecimal("0.50")),
+      new Ingredient("SRCR", "Sour Cream", Type.SAUCE, new BigDecimal("0.75"))
     );
 
     when(ingredientRepository.findAll())
         .thenReturn(ingredients);
 
-    when(ingredientRepository.findById("FLTO")).thenReturn(Optional.of(new Ingredient("FLTO", "Flour Tortilla", Type.WRAP)));
-    when(ingredientRepository.findById("GRBF")).thenReturn(Optional.of(new Ingredient("GRBF", "Ground Beef", Type.PROTEIN)));
-    when(ingredientRepository.findById("CHED")).thenReturn(Optional.of(new Ingredient("CHED", "Cheddar", Type.CHEESE)));
-    
+    when(ingredientRepository.findById("FLTO")).thenReturn(Optional.of(new Ingredient("FLTO", "Flour Tortilla", Type.WRAP, new BigDecimal("1.50"))));
+    when(ingredientRepository.findById("GRBF")).thenReturn(Optional.of(new Ingredient("GRBF", "Ground Beef", Type.PROTEIN, new BigDecimal("2.50"))));
+    when(ingredientRepository.findById("CHED")).thenReturn(Optional.of(new Ingredient("CHED", "Cheddar", Type.CHEESE, new BigDecimal("1.00"))));
+
     design = new Taco();
     design.setName("Test Taco");
 
     design.setIngredients(
         Arrays.asList(
-            new Ingredient("FLTO", "Flour Tortilla", Type.WRAP),
-            new Ingredient("GRBF", "Ground Beef", Type.PROTEIN),
-            new Ingredient("CHED", "Cheddar", Type.CHEESE)
+            new Ingredient("FLTO", "Flour Tortilla", Type.WRAP, new BigDecimal("1.50")),
+            new Ingredient("GRBF", "Ground Beef", Type.PROTEIN, new BigDecimal("2.50")),
+            new Ingredient("CHED", "Cheddar", Type.CHEESE, new BigDecimal("1.00"))
           )
         );
   }

@@ -1,5 +1,6 @@
 package tacos;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,17 +24,27 @@ public class Taco {
   private Long id;
 
   @NotNull
-  @Size(min=5, message="Name must be at least 5 characters long")
+  @Size(min = 5, message = "Name must be at least 5 characters long")
   private String name;
 
   private Date createdAt = new Date();
 
-  @Size(min=1, message="You must choose at least 1 ingredient")
+  @Size(min = 1, message = "You must choose at least 1 ingredient")
   @ManyToMany()
   private List<Ingredient> ingredients = new ArrayList<>();
-  
+
   public void addIngredient(Ingredient ingredient) {
     this.ingredients.add(ingredient);
+  }
+
+  public BigDecimal getPrice() {
+    BigDecimal total = BigDecimal.ZERO;
+    if (ingredients != null) {
+      for (Ingredient ingredient : ingredients) {
+        total = total.add(ingredient.getPrice());
+      }
+    }
+    return total;
   }
 
 }
