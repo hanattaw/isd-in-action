@@ -1,0 +1,46 @@
+@'
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Taco Cloud - Cart</title>
+    <link rel="stylesheet" th:href="@{/styles.css}" />
+  </head>
+
+  <body>
+    <h1>Your Taco Cart</h1>
+    <img th:src="@{/images/TacoCloud.png}"/>
+
+    <div th:if="${#lists.isEmpty(tacos)}">
+      <p>Your cart is currently empty.</p>
+    </div>
+
+    <div th:unless="${#lists.isEmpty(tacos)}">
+      <ul>
+        <li th:each="taco, iterStat : ${tacos}">
+          <span th:text="${taco.name}">taco name</span> -
+          <span th:text="'$' + ${taco.price}">$0.00</span>
+          <form method="POST"
+                th:action="@{/cart/remove/{index}(index=${iterStat.index})}"
+                style="display:inline;">
+            <button type="submit">Remove</button>
+          </form>
+        </li>
+      </ul>
+
+      <p>
+        <strong>Total: </strong>
+        <span th:text="'$' + ${totalPrice}">$0.00</span>
+      </p>
+
+      <form method="POST" th:action="@{/cart/clear}" style="display:inline;">
+        <button type="submit">Clear Cart</button>
+      </form>
+    </div>
+
+    <br/>
+    <a th:href="@{/design}">Design another taco</a> |
+    <a th:href="@{/orders/current}">Proceed to checkout</a>
+  </body>
+</html>
+'@ | Set-Content -Path ".\src\main\resources\templates\cart.html" -Encoding UTF8
